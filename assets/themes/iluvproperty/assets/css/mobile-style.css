@@ -1,0 +1,55 @@
+@media (max-width: 767px) {
+	#loginRegisterPage{
+		margin:auto;
+		padding:0;
+	}
+	#loginRegisterPage #registerBox{
+		border:none;	
+	}
+	#registerBox .registerBoxInnerFrame,
+	#loginBox .loginBoxInnerFrame {
+	     margin:0;
+	}
+	#loginRegisterPage,
+	#loginRegisterPage #loginBox,
+	#loginBox .loginBoxInnerFrame,
+	.piereg_container .piereg_loginform p,
+	
+	#loginRegisterPage #registerBox,
+	#registerBox .registerBoxInnerFrame{
+		width:100%;
+	}
+	#loginRegisterPage textarea, #loginRegisterPage input[type="text"], #loginRegisterPage input[type="password"], #loginRegisterPage input[type="email"]{
+	    border-radius: 3px;
+	    height: 35px;
+	    padding: 6px;
+	    width: 100%;
+	    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  		box-sizing: border-box;         /* Opera/IE 8+ */
+	}
+	#registerBox .registerBoxInnerFrame{
+		margin:auto;
+	}
+	#pie_register .halfL, #pie_register .halfR{
+		clear:both;
+		width:100%;
+		float:none;	
+		margin:9px 0 8px 0;
+	}
+	#pie_register input[type="text"], #pie_register .halfL input[type="text"], #pie_register .halfL input[type="password"], #pie_register .halfR input[type="text"], #pie_register .halfR input[type="password"]{
+		border-radius: 3px;
+	    height: 35px;
+	    padding: 6px;
+	    width: 100%;
+	    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+ 		 box-sizing: border-box;         /* Opera/IE 8+ */
+	}
+	#loginRegisterPage h2{
+		margin:30px 0 20px;
+	}
+	#registerBox h2{
+		border-top:2px solid #e5e5e5;
+	}
+}
