@@ -321,32 +321,73 @@ class Admin extends MY_Controller {
         $this->load->section('footer_section', 'common/mobile_footer', $data);
     }
 
-    public function mobile_enquire($listingSN = '32') {
-        $this->output->set_template('iluvproperty-mobile');
-        $this->load->js($this->config->item('mobileThemeManualURL') . 'assets/js/jquery.validate.js');
-        //$this->load->js($this->config->item('mobileThemeManualURL') . 'assets/js/login_validation.js');
-        $data['headingName'] = 'Enquire More Information';
-        $data['backLink'] = $this->config->item('base_url') . 'admin/listing_mobile';
-        $this->load->section('header_section', 'common/mobile_single_header', $data);
+    public function mobile_enquire($listingSN = '', $userSN = '') {
+
+        if ($userSN == '') {
+            $this->output->set_template('iluvproperty-mobile');
+            $this->load->js($this->config->item('mobileThemeManualURL') . 'assets/js/jquery.validate.js');
+            //$this->load->js($this->config->item('mobileThemeManualURL') . 'assets/js/login_validation.js');
+            $data['headingName'] = 'Enquire More Information';
+            $data['backLink'] = $this->config->item('base_url') . 'admin/listing_mobile';
+            $this->load->section('header_section', 'common/mobile_single_header', $data);
 
 
-        $dataArr = array('sn' => $this->session->userdata('logged_website_user_id'));
-        $userProfileArr = $this->Common_Model->getCommonTable($dataArr, 'mo_websiteuseragents');
-        $data['userProfileArr'] = $userProfileArr[0];
+            $dataArr = array('sn' => $this->session->userdata('logged_website_user_id'));
+            $userProfileArr = $this->Common_Model->getCommonTable($dataArr, 'mo_websiteuseragents');
+            $data['userProfileArr'] = $userProfileArr[0];
 
-        $listingArr = array('sn' => $listingSN);
-        $userProfileArr = $this->Common_Model->getCommonTable($listingArr, 'mo_userlistings');
+            $listingArr = array('sn' => $listingSN);
+            $userProfileArr = $this->Common_Model->getCommonTable($listingArr, 'mo_userlistings');
 
-        $tempuseragentsn = $userProfileArr[0]['userAgentSN'];
-        $listingArr2 = array('sn' => $tempuseragentsn);
-        $userProfileArr2 = $this->Common_Model->getCommonTable($listingArr2, 'mo_websiteuseragents');
-        $data['toUserArr'] = $userProfileArr2[0];
+            $tempuseragentsn = $userProfileArr[0]['userAgentSN'];
+            $listingArr2 = array('sn' => $tempuseragentsn);
+            $userProfileArr2 = $this->Common_Model->getCommonTable($listingArr2, 'mo_websiteuseragents');
+            $data['toUserArr'] = $userProfileArr2[0];
 
 //        $listingArr3 = array('sn' => $listingSN);
-        $userProfileArr3 = $this->Common_Model->getCommonTable($listingArr, 'mo_userlistings');
-        $data['listingArr'] = $userProfileArr3[0];
+            $userProfileArr3 = $this->Common_Model->getCommonTable($listingArr, 'mo_userlistings');
+            $data['listingArr'] = $userProfileArr3[0];
 
-        $this->load->view('listing/mobile_enquire', $data);
+            $this->load->view('listing/mobile_enquire', $data);
+        } else {
+            $this->output->set_template('iluvproperty-mobile');
+            $this->load->js($this->config->item('mobileThemeManualURL') . 'assets/js/jquery.validate.js');
+            //$this->load->js($this->config->item('mobileThemeManualURL') . 'assets/js/login_validation.js');
+            $data['headingName'] = 'Enquire History';
+            $data['backLink'] = $this->config->item('base_url') . 'admin/listing_mobile';
+            $this->load->section('header_section', 'common/mobile_single_header', $data);
+
+
+            
+            $sql = "SELECT * FROM `mo_userenquiry` where  (userSN = ".$userSN.
+                    " and  userAgentSN = ". $this->session->userdata('logged_website_user_id').
+                    " and  userListingSN = ". $listingSN.
+                                          "  ) or ( userSN = ".$this->session->userdata('logged_website_user_id').
+                    " and  userAgentSN = ".$userSN.
+                    " and  userListingSN = ". $listingSN.
+                    " ) order by dateCreated " ;
+            $data['enquireArr'] = $this->db->query($sql)->result();
+                        
+            
+            $dataArr = array('sn' => $this->session->userdata('logged_website_user_id'));
+            $userProfileArr = $this->Common_Model->getCommonTable($dataArr, 'mo_websiteuseragents');
+            $data['userProfileArr'] = $userProfileArr[0];
+
+            $listingArr = array('sn' => $listingSN);
+            $userProfileArr = $this->Common_Model->getCommonTable($listingArr, 'mo_userlistings');
+
+            $tempuseragentsn = $userProfileArr[0]['userAgentSN'];
+            $listingArr2 = array('sn' => $tempuseragentsn);
+            $userProfileArr2 = $this->Common_Model->getCommonTable($listingArr2, 'mo_websiteuseragents');
+            $data['toUserArr'] = $userProfileArr2[0];
+
+//        $listingArr3 = array('sn' => $listingSN);
+            $userProfileArr3 = $this->Common_Model->getCommonTable($listingArr, 'mo_userlistings');
+            $data['listingArr'] = $userProfileArr3[0];
+
+            $this->load->view('listing/mobile_enquire', $data);
+            
+        }
 
         //footer Part
         $footerArr[] = array('name' => 'Search Listings', 'href' => 'admin/listing_mobile', 'class' => 'ui-btn-active', 'icon' => 'search');
@@ -447,16 +488,18 @@ class Admin extends MY_Controller {
         $countText = "";
         if ($data['userProfileArr'][0]->countTemp > 0) {
             $countText = "(" . $data['userProfileArr'][0]->countTemp . ")";
+            $changeColor = "redColor";
+        } else {
+            $changeColor = "";
         }
 
-        $filterArr[] = array('name' => 'Enquiry Box' . $countText, 'href' => '#', 'class' => '', 'icon' => 'mail');
+        $filterArr[] = array('name' => 'Enquiry Box' . $countText, 'href' => '#', 'class' => "redColor", 'icon' => 'mail');
         $data['footerArr'] = $filterArr;
         $this->load->section('common_section', 'common/mobile_footer', $data);
         //2 end  of message box title
-
         //3 start of content of enquiry
         $sql = "select q2.* ,user2.`firstName` ,user2.`lastName`, listing.`title` from (select `userSN`, `userListingSN`,`subject`,`message`, `dateFirstRead`,`dateCreated`\n"
-                . "FROM (select * from `mo_userenquiry` where `userAgentSN`=" . $this->session->userdata('logged_website_user_id') . " order by `dateFirstRead` , `dateCreated` desc) q1 group by `userSN`, `userListingSN`) q2 left join `mo_websiteuseragents` user2\n"
+                . "FROM (select * from `mo_userenquiry` where `userAgentSN`=" . $this->session->userdata('logged_website_user_id') . " order by `dateFirstRead` asc , `dateCreated` desc) q1 group by `userSN`, `userListingSN`  order by `dateFirstRead` ) q2 left join `mo_websiteuseragents` user2\n"
                 . "on q2.userSN = user2.`sn` \n"
                 . "left join `mo_userlistings` listing\n"
                 . "on q2.userListingSN = listing.`sn`";
@@ -468,7 +511,6 @@ class Admin extends MY_Controller {
 //        $data['footerArr'] = $filterArr;
 //        $this->load->section('common_section', 'enquiry/enquiryList', $data);
 //
-
         //footer Part
         $footerArr[] = array('name' => 'Search Listings', 'href' => 'admin/listing_mobile', 'class' => 'ui-btn-active', 'icon' => 'search');
         $footerArr[] = array('name' => 'My Listings', 'href' => 'admin/listing_mobile/mylisting', 'class' => '', 'icon' => 'search');
@@ -476,7 +518,5 @@ class Admin extends MY_Controller {
         $footerArr[] = array('name' => 'About us', 'href' => 'admin/info/aboutus/About us', 'class' => '', 'icon' => 'info');
         $data['footerArr'] = $footerArr;
         $this->load->section('footer_section', 'common/mobile_footer', $data);
-    }
-
-// end of     public function enquiry_dashboard($box = "inbox") {
+    }// end of     public function enquiry_dashboard($box = "inbox") {
 }

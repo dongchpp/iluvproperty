@@ -1,3 +1,21 @@
+
+<?php
+if(!empty($enquireArr))
+{   
+    echo '<pre>';
+    print_r($enquireArr);
+        echo '</pre>';
+
+    
+}
+
+?>
+
+
+
+
+
+
 <div  class="ui-content">
     <div class="alert alert-danger registerError"></div>
     <div class="alert alert-success"></div>
@@ -6,11 +24,9 @@
 
 
 
-
-
         <div>
             <label>From: <?= $userProfileArr['firstName'] ?> <?= $userProfileArr['lastName'] ?></label>
-            <label>To Agent: <?= $toUserArr['firstName'] ?> <?= $toUserArr['lastName'] ?></label>
+            <label>To : <?= $toUserArr['firstName'] ?> <?= $toUserArr['lastName'] ?></label>
 
             <input type="hidden" name="userSN" value="<?= $userProfileArr['sn'] ?>" />
             <input type="hidden" name="userAgentSN" value="<?= $toUserArr['sn'] ?>" />
