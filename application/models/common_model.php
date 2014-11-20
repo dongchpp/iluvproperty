@@ -141,4 +141,23 @@ class Common_Model extends CI_Model {
         return 0;
     }
 
+    
+    function enquiryHistory($userSN, $userAgentSN,$listingSN)
+    {
+       $sql = "SELECT * FROM `mo_userenquiry` where  (userSN = ".$userSN.
+                    " and  userAgentSN = ". $this->session->userdata('logged_website_user_id').
+                    " and  userListingSN = ". $listingSN.
+                                          "  ) or ( userSN = ".$this->session->userdata('logged_website_user_id').
+                    " and  userAgentSN = ".$userSN.
+                    " and  userListingSN = ". $listingSN.
+                    " ) order by dateCreated " ;
+            $enquireArr = $this->db->query($sql)->result_array();
+             return $enquireArr;
+
+                        //4  end of try to use model not use controller directlly               
+
+            
+        
+        
+    }
 }

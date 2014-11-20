@@ -1,14 +1,21 @@
 
 <?php
-if(!empty($enquireArr))
-{   
+if (!empty($enquireArr)) {
     echo '<pre>';
     print_r($enquireArr);
-        echo '</pre>';
-
-    
+    echo '</pre>';
 }
-
+//
+//           [sn] => 2
+//            [userSN] => 2
+//            [userAgentSN] => 4
+//            [userListingSN] => 35
+//            [subject] => 1432
+//            [message] => 14231423
+//            [dateCreated] => 2014-11-12 00:00:00
+//            [dateFirstRead] => 2014-11-19 00:00:00
+//}
+//
 ?>
 
 
@@ -19,6 +26,48 @@ if(!empty($enquireArr))
 <div  class="ui-content">
     <div class="alert alert-danger registerError"></div>
     <div class="alert alert-success"></div>
+
+
+
+
+
+    <ul data-role="listview" data-split-icon="gear" data-split-theme="d" data-filter="true" data-filter-placeholder="Search..." data-inset="true">
+        <?php foreach ($enquireArr as $listing) { ?>
+            <li>
+
+                <?php
+                if ($listing['userAgentSN'] == $this->session->userdata('logged_website_user_id')) {
+                    $changeColor = "";
+                    ?>
+                    <label>From: <?= $userProfileArr['firstName'] ?> <?= $userProfileArr['lastName'] ?></label>
+                    <label>To : <?= $toUserArr['firstName'] ?> <?= $toUserArr['lastName'] ?></label>
+                    <?php
+                } else {
+                    $changeColor = "redColor";
+                    ?>
+                    <label>From : <?= $toUserArr['firstName'] ?> <?= $toUserArr['lastName'] ?></label>
+                    <label>To: <?= $userProfileArr['firstName'] ?> <?= $userProfileArr['lastName'] ?></label>
+
+                    <?php
+                }
+                ?>
+
+                <h3 class="<?= $changeColor ?>"><?= $listing['subject'] . " - " . $listing['dateCreated'] ?> </h3>
+                <p><?= $listing['message'] ?></p>
+
+
+            </li>
+        <?php } ?>
+    </ul>
+
+
+
+
+
+
+
+
+
     <form id="pie_regiser_form" enctype="multipart/form-data">
         <input type="hidden" name="sn" value="<?= $userProfileArr['sn'] ?>" />
 

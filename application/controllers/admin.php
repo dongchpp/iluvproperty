@@ -357,16 +357,14 @@ class Admin extends MY_Controller {
             $data['backLink'] = $this->config->item('base_url') . 'admin/listing_mobile';
             $this->load->section('header_section', 'common/mobile_single_header', $data);
 
-
+            $userProfileArr = $this->Common_Model->enquiryHistory($userSN, $this->session->userdata('logged_website_user_id'), $listingSN );
+            $data['enquireArr'] =   $userProfileArr ;//$userProfileArr[0];
             
-            $sql = "SELECT * FROM `mo_userenquiry` where  (userSN = ".$userSN.
-                    " and  userAgentSN = ". $this->session->userdata('logged_website_user_id').
-                    " and  userListingSN = ". $listingSN.
-                                          "  ) or ( userSN = ".$this->session->userdata('logged_website_user_id').
-                    " and  userAgentSN = ".$userSN.
-                    " and  userListingSN = ". $listingSN.
-                    " ) order by dateCreated " ;
-            $data['enquireArr'] = $this->db->query($sql)->result();
+            
+                       
+            
+            
+            
                         
             
             $dataArr = array('sn' => $this->session->userdata('logged_website_user_id'));
