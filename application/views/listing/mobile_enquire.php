@@ -1,26 +1,4 @@
 
-<?php
-if (!empty($enquireArr)) {
-    echo '<pre>';
-    print_r($enquireArr);
-    echo '</pre>';
-}
-//
-//           [sn] => 2
-//            [userSN] => 2
-//            [userAgentSN] => 4
-//            [userListingSN] => 35
-//            [subject] => 1432
-//            [message] => 14231423
-//            [dateCreated] => 2014-11-12 00:00:00
-//            [dateFirstRead] => 2014-11-19 00:00:00
-//}
-//
-?>
-
-
-
-
 
 
 <div  class="ui-content">
@@ -30,36 +8,38 @@ if (!empty($enquireArr)) {
 
 
 
-
-    <ul data-role="listview" data-split-icon="gear" data-split-theme="d" data-filter="true" data-filter-placeholder="Search..." data-inset="true">
-        <?php foreach ($enquireArr as $listing) { ?>
-            <li>
-
-                <?php
-                if ($listing['userAgentSN'] == $this->session->userdata('logged_website_user_id')) {
-                    $changeColor = "";
-                    ?>
-                    <label>From: <?= $userProfileArr['firstName'] ?> <?= $userProfileArr['lastName'] ?></label>
-                    <label>To : <?= $toUserArr['firstName'] ?> <?= $toUserArr['lastName'] ?></label>
-                    <?php
-                } else {
-                    $changeColor = "redColor";
-                    ?>
-                    <label>From : <?= $toUserArr['firstName'] ?> <?= $toUserArr['lastName'] ?></label>
-                    <label>To: <?= $userProfileArr['firstName'] ?> <?= $userProfileArr['lastName'] ?></label>
+    <?php
+    if (!empty($enquireArr)) {
+        ?>
+        <ul data-role="listview" data-split-icon="gear" data-split-theme="d" data-filter="true" data-filter-placeholder="Search..." data-inset="true">
+            <?php foreach ($enquireArr as $listing) { ?>
+                <li>
 
                     <?php
-                }
-                ?>
+                    if ($listing['userAgentSN'] == $this->session->userdata('logged_website_user_id')) {
+                        $changeColor = "";
+                        ?>
+                        <label class="<?= $changeColor ?>">From : <?= $toUserArr['firstName'] ?> <?= $toUserArr['lastName'] ?></label>
+                        <label class="<?= $changeColor ?>">To: <?= $userProfileArr['firstName'] ?> <?= $userProfileArr['lastName'] ?></label>
+                        <?php
+                    } else {
+                        $changeColor = "redColor";
+                        ?>
 
-                <h3 class="<?= $changeColor ?>"><?= $listing['subject'] . " - " . $listing['dateCreated'] ?> </h3>
-                <p><?= $listing['message'] ?></p>
+                        <label class="<?= $changeColor ?>">From: <?= $userProfileArr['firstName'] ?> <?= $userProfileArr['lastName'] ?></label>
+                        <label class="<?= $changeColor ?>">To : <?= $toUserArr['firstName'] ?> <?= $toUserArr['lastName'] ?></label>
+                        <?php
+                    }
+                    ?>
+
+                    <h3 class="<?= $changeColor ?>"><?= $listing['subject'] . " - " . $listing['dateCreated'] ?> </h3>
+                    <p class="<?= $changeColor ?>"><?= $listing['message'] ?></p>
 
 
-            </li>
-        <?php } ?>
-    </ul>
-
+                </li>
+            <?php } ?>
+        </ul>
+    <?php } ?>
 
 
 
@@ -148,6 +128,8 @@ if (!empty($enquireArr)) {
                             $(".alert-success").show();
                             $(".registerError").hide();
                             $('#pie_regiser_form').trigger("reset");
+                            alert('Your enquiry has been sent! \n Thanks');
+                            window.location.replace($base_url + 'admin/enquiry_dashboard' );
                         } else {
                             $(".registerError").html(xhr.responseText);
                             $(".registerError").show();

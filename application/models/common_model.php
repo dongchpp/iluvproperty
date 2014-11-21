@@ -14,10 +14,10 @@ class Common_Model extends CI_Model {
     public function sendEmail($from, $fromName, $to, $cc, $bcc, $message, $subject, $attach = array()) {
         $this->load->library('email');
         //$config['protocol'] = 'sendmail';
-      //  $config['charset'] = 'utf-8';
+        //  $config['charset'] = 'utf-8';
         $config['wordwrap'] = TRUE;
         $config['mailtype'] = 'html';
-        
+
         $config['protocol'] = 'smtp';
         $config['smtp_host'] = 'ssl://smtp.gmail.com';
         $config['smtp_port'] = '465';
@@ -141,23 +141,24 @@ class Common_Model extends CI_Model {
         return 0;
     }
 
-    
-    function enquiryHistory($userSN, $userAgentSN,$listingSN)
-    {
-       $sql = "SELECT * FROM `mo_userenquiry` where  (userSN = ".$userSN.
-                    " and  userAgentSN = ". $this->session->userdata('logged_website_user_id').
-                    " and  userListingSN = ". $listingSN.
-                                          "  ) or ( userSN = ".$this->session->userdata('logged_website_user_id').
-                    " and  userAgentSN = ".$userSN.
-                    " and  userListingSN = ". $listingSN.
-                    " ) order by dateCreated " ;
-            $enquireArr = $this->db->query($sql)->result_array();
-             return $enquireArr;
+    function enquiryHistory($userSN, $userAgentSN, $listingSN) {
+        $sql = "SELECT * FROM `mo_userenquiry` where  (userSN = " . $userSN .
+                " and  userAgentSN = " . $this->session->userdata('logged_website_user_id') .
+                " and  userListingSN = " . $listingSN .
+                "  ) or ( userSN = " . $this->session->userdata('logged_website_user_id') .
+                " and  userAgentSN = " . $userSN .
+                " and  userListingSN = " . $listingSN .
+                " ) order by dateCreated ";
+        $enquireArr = $this->db->query($sql)->result_array();
+        return $enquireArr;
 
-                        //4  end of try to use model not use controller directlly               
-
-            
-        
-        
+        //4  end of try to use model not use controller directlly               
     }
+
+    function enquiryUpdateFirstRead($userSN, $listingSN) {
+        $sql = "update `mo_userenquiry` set `dateFirstRead` = NOW() where `userSN` = ". $userSN ." and `userListingSN` = ". $listingSN . " AND `dateFirstRead`='0000-00-00 00:00:00'";
+        $enquireArr = $this->db->query($sql);
+        return true;
+    }
+
 }

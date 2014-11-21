@@ -357,34 +357,35 @@ class Admin extends MY_Controller {
             $data['backLink'] = $this->config->item('base_url') . 'admin/listing_mobile';
             $this->load->section('header_section', 'common/mobile_single_header', $data);
 
-            $userProfileArr = $this->Common_Model->enquiryHistory($userSN, $this->session->userdata('logged_website_user_id'), $listingSN );
-            $data['enquireArr'] =   $userProfileArr ;//$userProfileArr[0];
-            
-            
-                       
-            
-            
-            
-                        
-            
+            $userProfileArr = $this->Common_Model->enquiryHistory($userSN, $this->session->userdata('logged_website_user_id'), $listingSN);
+            $data['enquireArr'] = $userProfileArr;
+
+
+
+
+
+
+
+
             $dataArr = array('sn' => $this->session->userdata('logged_website_user_id'));
             $userProfileArr = $this->Common_Model->getCommonTable($dataArr, 'mo_websiteuseragents');
             $data['userProfileArr'] = $userProfileArr[0];
 
             $listingArr = array('sn' => $listingSN);
-            $userProfileArr = $this->Common_Model->getCommonTable($listingArr, 'mo_userlistings');
+            $listingArr = $this->Common_Model->getCommonTable($listingArr, 'mo_userlistings');
+            $data['listingArr'] = $listingArr[0];
 
-            $tempuseragentsn = $userProfileArr[0]['userAgentSN'];
-            $listingArr2 = array('sn' => $tempuseragentsn);
-            $userProfileArr2 = $this->Common_Model->getCommonTable($listingArr2, 'mo_websiteuseragents');
+            $agentSNArr = array('sn' => $userSN );
+            $userProfileArr2 = $this->Common_Model->getCommonTable($agentSNArr, 'mo_websiteuseragents');
             $data['toUserArr'] = $userProfileArr2[0];
 
+            $this->Common_Model->enquiryUpdateFirstRead($userSN, $listingSN);
+                    
 //        $listingArr3 = array('sn' => $listingSN);
-            $userProfileArr3 = $this->Common_Model->getCommonTable($listingArr, 'mo_userlistings');
-            $data['listingArr'] = $userProfileArr3[0];
+//            $userProfileArr3 = $this->Common_Model->getCommonTable($listingArr, 'mo_userlistings');
+//            $data['listingArr'] = $userProfileArr3[0];
 
             $this->load->view('listing/mobile_enquire', $data);
-            
         }
 
         //footer Part
@@ -430,8 +431,8 @@ class Admin extends MY_Controller {
                 $to = $this->input->post('email');
                 $message = "From user:  " . $this->input->post('useremail') . "  " . $this->input->post('message');
                 $subject = $this->input->post('subject');
-
-                $this->Common_Model->sendEmail($from, $fromName, $to, '', '', $message, $subject);
+                    
+               // $this->Common_Model->sendEmail($from, $fromName, $to, '', '', $message, $subject);
             } catch (Exception $e) {
                 log_message('error', 'Can\'t send activation email to user ' . var_dump($dataArr));
             }
@@ -516,5 +517,7 @@ class Admin extends MY_Controller {
         $footerArr[] = array('name' => 'About us', 'href' => 'admin/info/aboutus/About us', 'class' => '', 'icon' => 'info');
         $data['footerArr'] = $footerArr;
         $this->load->section('footer_section', 'common/mobile_footer', $data);
-    }// end of     public function enquiry_dashboard($box = "inbox") {
+    }
+
+// end of     public function enquiry_dashboard($box = "inbox") {
 }
