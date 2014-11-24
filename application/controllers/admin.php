@@ -323,6 +323,7 @@ class Admin extends MY_Controller {
 
     public function mobile_enquire($listingSN = '', $userSN = '') {
 
+        //used in property page, to start a query from beginning
         if ($userSN == '') {
             $this->output->set_template('iluvproperty-mobile');
             $this->load->js($this->config->item('mobileThemeManualURL') . 'assets/js/jquery.validate.js');
@@ -349,7 +350,7 @@ class Admin extends MY_Controller {
             $data['listingArr'] = $userProfileArr3[0];
 
             $this->load->view('listing/mobile_enquire', $data);
-        } else {
+        } else {  // used to reply a enquiry and show history communication history 
             $this->output->set_template('iluvproperty-mobile');
             $this->load->js($this->config->item('mobileThemeManualURL') . 'assets/js/jquery.validate.js');
             //$this->load->js($this->config->item('mobileThemeManualURL') . 'assets/js/login_validation.js');

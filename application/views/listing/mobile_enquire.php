@@ -9,7 +9,7 @@
 
 
     <?php
-    if (!empty($enquireArr)) {
+    if (!empty($enquireArr)) { //when reply , show communication history
         ?>
         <ul data-role="listview" data-split-icon="gear" data-split-theme="d" data-filter="true" data-filter-placeholder="Search..." data-inset="true">
             <?php foreach ($enquireArr as $listing) { ?>
