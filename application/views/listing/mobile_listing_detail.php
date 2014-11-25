@@ -94,7 +94,7 @@
     <div data-role="tabs" id="tabs">
         <div data-role="navbar">
             <ul>
-                <li><a href="#one" data-ajax="false">Detail</a></li>
+                <li ><a href="#one" data-ajax="false" class="ui-btn-active">Detail</a></li>
                 <li><a href="#two" data-ajax="false">Agent</a></li>
                 <li><a href="#three" data-ajax="false">Enquire</a></li>
             </ul>
@@ -134,8 +134,10 @@
 
 
                     <div>
+                        <a href="#" data-ajax="false" class="ui-btn-active"> <label id="successMessage" ></label></a>
                         <label>Title:</label>
                         <input type="text" name="subject" id="title" placeholder="Title" value="" />
+                        
                     </div>
                     <textarea rows="10" name="message" id="message" class="textarea_class" placeholder="my enquire"></textarea>
             </div>
@@ -197,12 +199,6 @@
         e.preventDefault()
         mySwiper.swipeNext()
     })
-</script>
-
-
-
-
-<script>
 
     $(document).ready(function () {
 
@@ -252,12 +248,13 @@
                     if (xhr.status === 200) {
                         if (xhr.responseText == "true") {
                             $(".alert-success").html("Thank you for enquire, You message has been sent to  the agent!");
+                            $("#successMessage").html("Thank you for enquire, You message has been sent to  the agent!");
 
                             $(".alert-success").show();
                             $(".registerError").hide();
                             $('#pie_regiser_form').trigger("reset");
-                            alert('Your enquiry has been sent! \n Thanks');
-                            window.location.replace($base_url + 'admin/enquiry_dashboard');
+//                            alert('Your enquiry has been sent! \n Thanks');
+//                            window.location.replace($base_url + 'admin/enquiry_dashboard');
                         } else {
                             $(".registerError").html(xhr.responseText);
                             $(".registerError").show();
